@@ -2,17 +2,16 @@
   'use strict';
 
   const R = 1800;           // raio da arena
-  const GAP = 7;            // distancia entre as bolinhas do corpo
+  const GAP = 7;            // distância entre as bolinhas do corpo
   const QTD_COMIDA = 700;   // bolinhas na arena
   const QTD_BOTS = 10;      // cobras rivais
-  const NOMES = ['Naja', 'Jib\u00f3ia', 'V\u00edbora', 'Sucuri', 'Coral', 'Mamba', 'Cascavel', 'Anaconda', 'P\u00edton', 'Jararaca', 'Surucucu', 'Cobra-rei'];
+  const NOMES = ['Naja', 'Jibóia', 'Víbora', 'Sucuri', 'Coral', 'Mamba', 'Cascavel', 'Anaconda', 'Píton', 'Jararaca', 'Surucucu', 'Cobra-rei'];
 
   let raiz, palco, btnIniciar, btnTela, cv, ctx, pal;
   let hudPlacar, hudRank, btnTurbo, aviso, avisoTitulo, avisoTexto;
   let W = 0, H = 0, dpr = 1, zoom = 1, vx0 = 0, vx1 = 0, vy0 = 0, vy1 = 0;
   let cobras = [], comida = [], eu = null;
-  let rodando = false, loopAtivo = false, ultimo = 0, tRank = 0, recorde = 0, matiz = 48;
-  let turbo = false, turboId = -1, mx = null, my = null;
+  let rodando = false, loopAtivo = false, ultimo = 0, tRank = 0, turbo = false, recorde = 0, matiz = 48;
   const teclas = {};
 
   const rnd = (a, b) => a + Math.random() * (b - a);
@@ -25,7 +24,7 @@
     return e;
   };
 
-  /* criacao */
+  /* ---------- criação ---------- */
   function novaCobra(nome, bot, x, y) {
     const ang = rnd(0, 6.283);
     const c = { nome, bot, ang, alvo: ang, meta: ang, t: 0, turbo: false, gota: 0, morta: false,
@@ -52,7 +51,7 @@
     return { x, y, v, r: 3 + v * 1.6, c: h === undefined ? Math.floor(rnd(0, 360)) : h };
   }
 
-  /* movimento */
+  /* ---------- movimento ---------- */
   function mover(c, dt) {
     let d = c.alvo - c.ang;
     d = Math.atan2(Math.sin(d), Math.cos(d));
@@ -84,7 +83,7 @@
     }
   }
 
-  /* bots */
+  /* ---------- bots ---------- */
   function perigo(b, px, py) {
     for (const o of cobras) {
       if (o === b) continue;
@@ -100,7 +99,7 @@
     b.t -= dt;
     if (b.t <= 0) {
       b.t = rnd(15, 40);
-      let melhor = null, m = 160000;              // comida em ate 400px
+      let melhor = null, m = 160000;              // comida em até 400px
       for (const f of comida) {
         const d = dist2(f.x, f.y, h.x, h.y);
         if (d < m) { m = d; melhor = f; }
@@ -114,7 +113,7 @@
     b.alvo = alvo;
   }
 
-  /* colisao, morte e placar */
+  /* ---------- colisão, morte e placar ---------- */
   function bateu(c, h, r) {
     for (const o of cobras) {
       if (o === c) continue;
@@ -136,7 +135,7 @@
     const lista = cobras.slice().sort((a, b) => b.massa - a.massa);
     const top = lista.slice(0, 5).map((c, i) => (i + 1) + '. ' + c.nome + '  ' + Math.floor(c.massa));
     const pos = lista.indexOf(eu);
-    if (pos > 4) top.push((pos + 1) + '. Voc\u00ea  ' + Math.floor(eu.massa));
+    if (pos > 4) top.push((pos + 1) + '. Você  ' + Math.floor(eu.massa));
     hudRank.textContent = 'Ranking\n' + top.join('\n');
     hudPlacar.textContent = 'Tamanho ' + Math.floor(eu.massa) + '\nRecorde ' + Math.max(recorde, Math.floor(eu.massa));
   }
@@ -156,7 +155,7 @@
     mostrarAviso('Fim de jogo', 'Seu tamanho: ' + Math.floor(c.massa) + '\nRecorde: ' + recorde + '\nClique aqui para jogar de novo.');
   }
 
-  /* atualizacao e desenho */
+  /* ---------- atualização e desenho ---------- */
   function atualizar(dt) {
     if (!eu.morta) {
       eu.turbo = turbo || !!teclas.Space;
@@ -231,7 +230,7 @@
       ctx.fillStyle = 'hsl(' + f.c + ',90%,64%)';
       ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 7); ctx.fill();
     }
-    for (let i = cobras.length - 1; i >= 0; i--) desenharCobra(cobras[i]);     // voce fica por cima
+    for (let i = cobras.length - 1; i >= 0; i--) desenharCobra(cobras[i]);     // você fica por cima
   }
 
   function ajustar() {
@@ -250,12 +249,11 @@
     requestAnimationFrame(quadro);
   }
 
-  /* controles e inicio */
-  function mirar(x, y) {
-    mx = x; my = y;
+  /* ---------- controles e início ---------- */
+  function apontar(e) {
     if (!rodando || eu.morta) return;
     const b = palco.getBoundingClientRect();
-    eu.alvo = Math.atan2(y - b.top - H / 2, x - b.left - W / 2);
+    eu.alvo = Math.atan2(e.clientY - b.top - H / 2, e.clientX - b.left - W / 2);
   }
 
   function lerPaleta() {
@@ -270,7 +268,7 @@
     btnIniciar.blur();
     lerPaleta();
     cobras = []; comida = [];
-    eu = novaCobra('Voc\u00ea', false, rnd(-200, 200), rnd(-200, 200));
+    eu = novaCobra('Você', false, rnd(-200, 200), rnd(-200, 200));
     eu.h = matiz;
     cobras.push(eu);
     for (let i = 0; i < QTD_BOTS; i++) cobras.push(novaBot());
@@ -279,7 +277,6 @@
     aviso.classList.add('cb-oculto');
     btnIniciar.textContent = 'Reiniciar';
     ajustar();
-    if (mx !== null) mirar(mx, my);
     if (!loopAtivo) { loopAtivo = true; ultimo = performance.now(); requestAnimationFrame(quadro); }
   }
 
@@ -296,6 +293,11 @@
   }
 
   function montar() {
+    const titulo = document.createElement('h2');
+    titulo.className = 'cb-titulo';
+    titulo.textContent = 'Jogo da Cobrinha';
+    raiz.insertBefore(titulo, raiz.firstChild);
+
     palco = document.createElement('div');
     palco.className = 'cb-palco';
     raiz.appendChild(palco);
@@ -307,22 +309,22 @@
     hudRank = criar('div', 'cb-rank');
     btnTurbo = criar('button', 'cb-turbo');
     btnTurbo.type = 'button';
-    btnTurbo.textContent = '\u26A1\uFE0F';
+    btnTurbo.textContent = '⚡';
     btnTurbo.setAttribute('aria-label', 'Acelerar');
     aviso = criar('div', 'cb-aviso');
     avisoTitulo = criar('h3', 'cb-aviso-titulo', aviso);
     avisoTexto = criar('p', 'cb-aviso-texto', aviso);
-    mostrarAviso('Jogo da Cobrinha', 'Guie a cobra com o mouse ou o dedo.\nSegure o clique, Espa\u00e7o ou \u26A1\uFE0F para acelerar.\nColete bolinhas para crescer e fuja das outras cobras!\nClique em Iniciar jogo.');
+    mostrarAviso('Jogo da Cobrinha', 'Guie a cobra com o mouse ou o dedo.\nSegure o clique, Espaço ou ⚡ para acelerar.\nColete bolinhas para crescer e fuja das outras cobras!\nClique em Iniciar jogo.');
     ajustar();
 
-    window.addEventListener('pointermove', e => { if (e.isPrimary) mirar(e.clientX, e.clientY); });
+    palco.addEventListener('pointermove', apontar);
     palco.addEventListener('pointerdown', e => {
-      if (e.isPrimary) mirar(e.clientX, e.clientY);
-      if (e.pointerType === 'mouse' && e.button === 0) { turbo = true; turboId = e.pointerId; }
+      apontar(e);
+      if (e.pointerType === 'mouse' && e.button === 0) turbo = true;
     });
-    btnTurbo.addEventListener('pointerdown', e => { e.stopPropagation(); turbo = true; turboId = e.pointerId; });
-    ['pointerup', 'pointercancel'].forEach(ev => window.addEventListener(ev, e => { if (e.pointerId === turboId) turbo = false; }));
+    ['pointerup', 'pointercancel'].forEach(ev => window.addEventListener(ev, () => { turbo = false; }));
     window.addEventListener('blur', () => { turbo = false; });
+    btnTurbo.addEventListener('pointerdown', e => { e.stopPropagation(); turbo = true; });
     aviso.addEventListener('click', iniciar);
 
     document.addEventListener('keydown', e => {
@@ -343,7 +345,7 @@
     raiz = document.getElementById('cobrinha');
     btnIniciar = document.getElementById('cobrinhaIniciar');
     btnTela = document.getElementById('cobrinhaTelaCheia');
-    if (!raiz || !btnIniciar || !btnTela) { console.error('Cobrinha: HTML nao encontrado (ids cobrinha, cobrinhaIniciar, cobrinhaTelaCheia).'); return; }
+    if (!raiz || !btnIniciar || !btnTela) { console.error('Cobrinha: HTML não encontrado (ids cobrinha, cobrinhaIniciar, cobrinhaTelaCheia).'); return; }
     try { recorde = +localStorage.getItem('cobrinha_recorde') || 0; } catch (e) { }
     montar();
     btnIniciar.addEventListener('click', iniciar);
@@ -353,7 +355,3 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
-
-
-
-

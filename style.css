@@ -166,15 +166,15 @@ padding: 24px 0;
 display: flex;
 justify-content: space-around;
 }
-.escola{
-background-image: #af0000
+.escola {
+background-color: #af0000;
 color: white;
 display: flex;
-justify-content:center;
+justify-content: center;
 padding: 24px 0;
-text-align:center;
-display:block;
+text-align: center;
 }
+
 .escola-titulo{
 padding: 50px;
 text-align: center;
@@ -192,7 +192,9 @@ text-decoration: none;
 
 
 /*JOGO*/
+
 #cobrinha {
+  /* cores do jogo: o JavaScript lê estas variáveis */
   --cb-fundo: #07081c;
   --cb-arena: #12153a;
   --cb-borda: #ff5d73;
@@ -268,7 +270,6 @@ text-decoration: none;
 /* tela cheia */
 #cobrinha.cb-full { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; max-width: none; margin: 0; border-radius: 0; }
 #cobrinha.cb-full .cb-palco { height: auto; }
-
 
 
 /* essse e a parte do mapa */
