@@ -55,7 +55,10 @@ text-align: center;
 }
 .estudante-imagem{
 width: 120px;
+align-items: center;
+justify-content: center;
 }
+
 .estudante-icone{
 width: 38px;
 padding: 4px 8px;
