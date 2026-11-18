@@ -115,6 +115,9 @@ text-align: center;
 }
 .estudante-imagem{
 width: 120px;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 .estudante-icone{
 width: 38px;
