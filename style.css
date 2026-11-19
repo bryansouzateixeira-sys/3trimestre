@@ -199,83 +199,87 @@ text-decoration: none;
 
 /*JOGO*/
 
-#cobrinha {
-  /* cores do jogo: o JavaScript lê estas variáveis */
-  --cb-fundo: #07081c;
-  --cb-arena: #12153a;
-  --cb-borda: #ff5d73;
-  --cb-pontos: rgba(255, 255, 255, .08);
-  --cb-nome: rgba(255, 255, 255, .85);
-  --cb-olho: #ffffff;
-  --cb-pupila: #10112a;
-  --cb-voce: 48;
-  --cb-fonte: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
-
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 14px;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  grid-template-rows: auto 1fr;
-  grid-template-areas: "titulo iniciar cheia" "palco palco palco";
-  align-items: center;
-  gap: 12px 8px;
-  background: #0e1030;
-  color: #f2f0ff;
-  border-radius: 18px;
-  font-family: var(--cb-fonte);
-  box-shadow: 0 14px 44px rgba(7, 8, 28, .55);
-}
-#cobrinha *, #cobrinha *::before, #cobrinha *::after { box-sizing: border-box; }
-
-#cobrinha .cb-titulo { grid-area: titulo; margin: 0; font-size: 1.35rem; font-weight: 800; letter-spacing: .02em; color: #ffd166; }
-#cobrinhaIniciar { grid-area: iniciar; background: #ff5d73; color: #fff; }
-#cobrinhaTelaCheia { grid-area: cheia; background: transparent; color: #f2f0ff; box-shadow: inset 0 0 0 2px #4a50a8; }
-
-#cobrinha button {
-  font: 700 .95rem var(--cb-fonte);
-  border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer;
-  transition: transform .12s, filter .12s;
-}
-#cobrinha button:hover { filter: brightness(1.12); }
-#cobrinha button:active { transform: scale(.96); }
-#cobrinha button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
-
-#cobrinha .cb-palco {
-  grid-area: palco; position: relative; align-self: stretch; min-height: 0;
-  height: 480px; height: min(72vh, 600px);
-  overflow: hidden; border-radius: 12px; background: var(--cb-fundo);
-  touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair;
-}
-#cobrinha .cb-palco canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; }
-
-#cobrinha .cb-placar, #cobrinha .cb-rank {
-  position: absolute; padding: 8px 12px; border-radius: 12px; white-space: pre;
-  background: rgba(7, 8, 28, .6); font-size: 14px; font-weight: 700; line-height: 1.5; pointer-events: none;
-}
-#cobrinha .cb-placar { left: 12px; bottom: 12px; }
-#cobrinha .cb-rank { right: 12px; top: 12px; min-width: 150px; font-size: 13px; font-weight: 600; }
-
-#cobrinha .cb-turbo {
-  position: absolute; right: 16px; bottom: 16px; width: 62px; height: 62px; padding: 0;
-  border-radius: 50%; font-size: 26px; background: #ffd166; color: #1a1500;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .4);
+.secao-jogo {
+    width: 100%;
+    margin: 30px auto;
+    box-sizing: border-box;
+    text-align: center;
 }
 
-#cobrinha .cb-aviso {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 24px; text-align: center; background: rgba(7, 8, 28, .78); cursor: pointer;
+/* Quadro do jogo */
+.quadro-jogo {
+    display: block;
+    position: relative;
+    width: calc(100% - 32px);
+    max-width: 1400px;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+    padding: 0;
+    background: #080808;
+    overflow: hidden;
+    border-radius: 14px;
+    box-sizing: border-box;
 }
-#cobrinha .cb-aviso-titulo { margin: 0 0 10px; font-size: 1.7rem; font-weight: 800; color: #ffd166; }
-#cobrinha .cb-aviso-texto { margin: 0; line-height: 1.7; white-space: pre-line; }
-#cobrinha .cb-aviso.cb-oculto { display: none; }
 
-/* tela cheia */
-#cobrinha.cb-full { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; max-width: none; margin: 0; border-radius: 0; }
-#cobrinha.cb-full .cb-palco { height: auto; }
+/* O jogo preenche completamente o quadro */
+.quadro-jogo iframe {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: #000000;
+}
+
+/* Tela cheia */
+#jogo-frame:fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    border: none;
+    border-radius: 0;
+    background: #000000;
+}
+
+/* Botão de tela cheia */
+.botao-tela-cheia {
+    display: block;
+    margin: 12px auto 30px;
+    padding: 12px 22px;
+    background: #171717;
+    color: #ffffff;
+    border: 1px solid #c49b45;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.botao-tela-cheia:hover {
+    background: #c49b45;
+    color: #111111;
+}
+
+/* Link para abrir o jogo em outra aba */
+.link-jogo {
+    margin-top: 14px;
+}
+
+.link-jogo a {
+    color: #c49b45;
+    text-decoration: none;
+}
+
+.link-jogo a:hover {
+    text-decoration: underline;
+}
 
 
 /* essse e a parte do mapa */
